@@ -15,7 +15,7 @@ const createApp = () => {
     res.status(200).json("pong");
   });
 
-  //   app.use(routes);
+  app.use(routes);
   return app;
 };
 
