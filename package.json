@@ -1,0 +1,36 @@
+{
+  "name": "wanted_pre_onboarding",
+  "version": "1.0.0",
+  "description": "wanted: assignment",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sockwon/wanted-pre-onboarding-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sockwon/wanted-pre-onboarding-backend/issues"
+  },
+  "homepage": "https://github.com/sockwon/wanted-pre-onboarding-backend#readme",
+  "devDependencies": {
+    "jest": "^29.2.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.0",
+    "typeorm": "^0.3.10"
+  }
+}
