@@ -11,8 +11,9 @@ const createApp = () => {
     morgan(":method :url :status :res[content-length] - :response-time ms")
   );
 
-  app.get("/ping", (req, res) => {
+  app.get("/ping", (req, res, next) => {
     res.status(200).json("pong");
+    next();
   });
 
   app.use(routes);
