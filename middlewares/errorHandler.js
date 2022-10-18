@@ -1,6 +1,6 @@
 const errorHandlerSync = (err, req, res, next) => {
   console.error(err.stack);
-  err.statusCode = err.statusCode || 400;
+  err.statusCode = err.statusCode || 500;
   res.status(err.statusCode).json({ message: err.message });
 };
 
@@ -10,7 +10,7 @@ const errorHandlerAsync = (func) => {
       await func(req, res);
     } catch (err) {
       console.error(err.stack);
-      res.status(err.statusCode || 400).json({ message: err.message });
+      res.status(err.statusCode || 500).json({ message: err.message });
     }
   };
 };
