@@ -28,6 +28,11 @@ router.get(
   errorHandlerAsync(notificationController.notificationGetSearch)
 );
 
+router.get(
+  "/page/:notificationId",
+  errorHandlerAsync(notificationController.notificationGetPage)
+);
+
 module.exports = {
   router,
 };

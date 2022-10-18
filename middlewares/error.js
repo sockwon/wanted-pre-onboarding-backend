@@ -11,8 +11,20 @@ class BaseError extends Error {
 }
 
 const findKeyError = (obj) => {
-  for (let i in obj) {
-    if (!obj[i]) {
+  if (typeof obj === "object") {
+    if (
+      (Array.isArray(obj) && obj.length === 0) ||
+      Object.keys(obj).length === 0
+    ) {
+      throw new BaseError("key_error", 400, "invalid_key");
+    }
+    for (let i in obj) {
+      if (!obj[i]) {
+        throw new BaseError("key_error", 400, "invalid_key");
+      }
+    }
+  } else {
+    if (!obj) {
       throw new BaseError("key_error", 400, "invalid_key");
     }
   }
