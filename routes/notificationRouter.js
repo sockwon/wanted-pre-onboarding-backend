@@ -18,6 +18,11 @@ router.delete(
   errorHandlerAsync(notificationController.notificationDelete)
 );
 
+router.get(
+  "/list",
+  errorHandlerAsync(notificationController.notificationGetList)
+);
+
 module.exports = {
   router,
 };
