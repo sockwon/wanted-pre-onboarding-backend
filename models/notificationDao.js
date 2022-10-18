@@ -1,5 +1,6 @@
 const { database } = require("./database");
 const Notification = require("../entity/Notification");
+const Company = require("../entity/Company");
 const error = require("../middlewares/error");
 
 const isExistId = async (column, value) => {
@@ -68,9 +69,34 @@ const notificationGetList = async () => {
     .getMany();
 };
 
+const notificationGetSearch = async (search) => {
+  return await database
+    .getRepository(Notification)
+    .createQueryBuilder("notification")
+    .select([
+      "company.company_name as 회사명",
+      "notification.position as 채용포지션",
+      "notification.reward as 채용보상금",
+      "notification.stack as 사용기술",
+      "notification.region as 지역",
+      "notification.nation as 국가",
+      "notification.description as 채용내용",
+    ])
+    .innerJoin(Company, "company", "company.id = notification.companyId")
+    .where("position LIKE :search", { search: `%${search}%` })
+    .orWhere("reward LIKE :search", { search: `%${search}%` })
+    .orWhere("stack LIKE :search", { search: `%${search}%` })
+    .orWhere("region LIKE :search", { search: `%${search}%` })
+    .orWhere("nation LIKE :search", { search: `%${search}%` })
+    .orWhere("description LIKE :search", { search: `%${search}%` })
+    .orWhere("company_name LIKE :search", { search: `%${search}%` })
+    .execute();
+};
+
 module.exports = {
   notificationPost,
   notificationPatch,
   notificationDelete,
   notificationGetList,
+  notificationGetSearch,
 };

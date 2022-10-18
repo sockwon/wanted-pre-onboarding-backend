@@ -20,9 +20,16 @@ const notificationGetList = async () => {
   return await notificationDao.notificationGetList();
 };
 
+const notificationGetSearch = async (data) => {
+  const result = data.getSearchList();
+  console.log(result);
+  return await notificationDao.notificationGetSearch(result);
+};
+
 module.exports = {
   notificationPost,
   notificationPatch,
   notificationDelete,
   notificationGetList,
+  notificationGetSearch,
 };

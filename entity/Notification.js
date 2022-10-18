@@ -56,7 +56,7 @@ const Notification = new EntitySchema({
       type: "many-to-one",
       onDelete: "CASCADE",
       JoinColumn: {
-        name: "company_id",
+        name: "companyId",
       },
     },
   },
