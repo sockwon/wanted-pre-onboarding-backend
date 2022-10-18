@@ -22,6 +22,12 @@ const User = new EntitySchema({
       updateDate: true,
     },
   },
+  relations: {
+    registration: {
+      target: "Registration",
+      type: "one-to-many",
+    },
+  },
 });
 
 module.exports = User;

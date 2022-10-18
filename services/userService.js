@@ -7,6 +7,13 @@ const userPost = async (data) => {
   await userDao.userPost(email);
 };
 
+const userRegistrationPost = async (data) => {
+  const result = data.getUserIdAndNotificationId();
+  error.findKeyError(result);
+  await userDao.userRegistrationPost(result.userId, result.notificationId);
+};
+
 module.exports = {
   userPost,
+  userRegistrationPost,
 };

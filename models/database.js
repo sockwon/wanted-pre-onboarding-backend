@@ -2,6 +2,7 @@ const { DataSource } = require("typeorm");
 const User = require("../entity/User");
 const Company = require("../entity/Company");
 const Notification = require("../entity/Notification");
+const Registration = require("../entity/Registration");
 
 const database = new DataSource({
   type: process.env.TYPEORM_CONNECTION,
@@ -12,7 +13,7 @@ const database = new DataSource({
   database: process.env.TYPEORM_DATABASE,
   logging: false,
   synchronize: true,
-  entities: [User, Company, Notification],
+  entities: [User, Company, Notification, Registration],
 });
 
 module.exports = {

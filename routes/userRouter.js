@@ -5,6 +5,11 @@ const { errorHandlerAsync } = require("../middlewares/errorHandler");
 
 router.post("/create", errorHandlerAsync(userController.userPost));
 
+router.post(
+  "/registration",
+  errorHandlerAsync(userController.userRegistrationPost)
+);
+
 module.exports = {
   router,
 };
