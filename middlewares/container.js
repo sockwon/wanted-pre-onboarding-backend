@@ -56,6 +56,11 @@ class Request {
     }
     return result;
   };
+
+  getUserIdAndNotificationId = () => {
+    const { userId, notificationId } = this.data.body;
+    return { userId, notificationId };
+  };
 }
 
 module.exports = Request;

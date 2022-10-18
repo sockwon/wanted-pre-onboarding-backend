@@ -59,6 +59,10 @@ const Notification = new EntitySchema({
         name: "companyId",
       },
     },
+    registration: {
+      target: "Registration",
+      type: "one-to-many",
+    },
   },
 });
 module.exports = Notification;

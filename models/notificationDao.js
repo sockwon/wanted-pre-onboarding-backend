@@ -3,13 +3,13 @@ const Notification = require("../entity/Notification");
 const Company = require("../entity/Company");
 const error = require("../middlewares/error");
 
-const isExistId = async (column, value) => {
+const isExistId = async (table, value) => {
   const result = await database.query(
     `
         SELECT EXISTS(
             SELECT
                 id
-            FROM ${column}
+            FROM ${table}
             WHERE id = '${value}'
         ) as id
         `
@@ -93,14 +93,14 @@ const notificationGetSearch = async (search) => {
       "notification.description as 채용내용",
     ])
     .innerJoin(Company, "company", "company.id = notification.companyId")
-    .where("position LIKE :search", { search: `%${search}%` })
-    .orWhere("reward LIKE :search", { search: `%${search}%` })
-    .orWhere("stack LIKE :search", { search: `%${search}%` })
-    .orWhere("region LIKE :search", { search: `%${search}%` })
-    .orWhere("nation LIKE :search", { search: `%${search}%` })
-    .orWhere("description LIKE :search", { search: `%${search}%` })
-    .orWhere("company_name LIKE :search", { search: `%${search}%` })
-    .orWhere("notification.id LIKE :search", { search: `%${search}%` })
+    .where("position LIKE :word", { word: `%${search}%` })
+    .orWhere("reward LIKE :word", { word: `%${search}%` })
+    .orWhere("stack LIKE :word", { word: `%${search}%` })
+    .orWhere("region LIKE :word", { word: `%${search}%` })
+    .orWhere("nation LIKE :word", { word: `%${search}%` })
+    .orWhere("description LIKE :word", { word: `%${search}%` })
+    .orWhere("company_name LIKE :word", { word: `%${search}%` })
+    .orWhere("notification.id LIKE :word", { word: `%${search}%` })
     .execute();
 };
 
@@ -154,4 +154,5 @@ module.exports = {
   notificationGetList,
   notificationGetSearch,
   notificationGetPage,
+  isExistId,
 };
