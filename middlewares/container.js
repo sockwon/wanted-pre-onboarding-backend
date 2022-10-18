@@ -4,8 +4,13 @@ class Request {
   }
 
   getSearchList = () => {
-    const search = this.data.query;
-    const result = search.trim().split(" ");
+    const { search } = this.data.body;
+    const result = search
+      .trim()
+      .split(" ")
+      .filter((val) => {
+        return val !== "";
+      });
     return result;
   };
 

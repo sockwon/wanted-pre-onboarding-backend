@@ -26,9 +26,17 @@ const notificationGetList = async (req, res) => {
   res.status(200).json(result);
 };
 
+const notificationGetSearch = async (req, res) => {
+  const result = await notificationService.notificationGetSearch(
+    new requestData(req)
+  );
+  res.status(200).json(result);
+};
+
 module.exports = {
   notificationPost,
   notificationPatch,
   notificationDelete,
   notificationGetList,
+  notificationGetSearch,
 };

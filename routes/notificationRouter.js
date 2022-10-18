@@ -23,6 +23,11 @@ router.get(
   errorHandlerAsync(notificationController.notificationGetList)
 );
 
+router.get(
+  "/search",
+  errorHandlerAsync(notificationController.notificationGetSearch)
+);
+
 module.exports = {
   router,
 };
