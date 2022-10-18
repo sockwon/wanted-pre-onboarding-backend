@@ -1,8 +1,8 @@
 const userService = require("../services/userService");
+const requestData = require("../middlewares/container");
 
 const userPost = async (req, res) => {
-  const { email } = req.body;
-  await userService.userPost(email);
+  await userService.userPost(new requestData(req));
   res.status(201).json({ message: "success" });
 };
 

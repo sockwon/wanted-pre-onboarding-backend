@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const routes = require("./routes");
+const { errorHandlerSync } = require("./middlewares/errorHandler");
 
 const createApp = () => {
   const app = express();
@@ -17,6 +18,7 @@ const createApp = () => {
   });
 
   app.use(routes);
+  app.use(errorHandlerSync);
   return app;
 };
 

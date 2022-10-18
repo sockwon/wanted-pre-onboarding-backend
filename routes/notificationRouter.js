@@ -1,8 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const notificationController = require("../controllers/notificationController");
+const { errorHandlerAsync } = require("../middlewares/errorHandler");
 
-router.post("/create", notificationController.notificationPost);
+router.post(
+  "/create",
+  errorHandlerAsync(notificationController.notificationPost)
+);
+
+router.patch(
+  "/:notificationId",
+  errorHandlerAsync(notificationController.notificationPatch)
+);
+
+router.delete(
+  "/:notificationId",
+  errorHandlerAsync(notificationController.notificationDelete)
+);
 
 module.exports = {
   router,

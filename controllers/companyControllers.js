@@ -1,8 +1,7 @@
 const companyService = require("../services/companyService");
-
+const requestData = require("../middlewares/container");
 const companyPost = async (req, res) => {
-  const { companyName } = req.body;
-  await companyService.companyPost(companyName);
+  await companyService.companyPost(new requestData(req));
   res.status(201).json({ message: "success" });
 };
 
