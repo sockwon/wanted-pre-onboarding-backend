@@ -14,12 +14,19 @@ const Company = new EntitySchema({
       type: "varchar",
       length: 50,
       nullable: false,
+      unique: true,
     },
     created_at: {
       createDate: true,
     },
     updated_at: {
       updateDate: true,
+    },
+  },
+  relations: {
+    Notification: {
+      target: "notification",
+      type: "one-to-many",
     },
   },
 });
