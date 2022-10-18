@@ -7,17 +7,12 @@ const notificationPost = async (req, res) => {
 };
 
 const notificationPatch = async (req, res) => {
-  const { notificationId } = req.params;
-  await notificationService.notificationPatch(
-    notificationId,
-    new requestData(req)
-  );
+  await notificationService.notificationPatch(new requestData(req));
   res.status(201).json({ message: "success" });
 };
 
 const notificationDelete = async (req, res) => {
-  const { notificationId } = req.params;
-  await notificationService.notificationDelete(notificationId);
+  await notificationService.notificationDelete(new requestData(req));
   res.status(204).json({ message: "success" });
 };
 
@@ -33,10 +28,18 @@ const notificationGetSearch = async (req, res) => {
   res.status(200).json(result);
 };
 
+const notificationGetPage = async (req, res) => {
+  const result = await notificationService.notificationGetPage(
+    new requestData(req)
+  );
+  res.status(200).json(result);
+};
+
 module.exports = {
   notificationPost,
   notificationPatch,
   notificationDelete,
   notificationGetList,
   notificationGetSearch,
+  notificationGetPage,
 };

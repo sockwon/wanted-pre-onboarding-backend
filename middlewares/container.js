@@ -3,6 +3,11 @@ class Request {
     this.data = req;
   }
 
+  getNotificationId = () => {
+    const { notificationId } = this.data.params;
+    return notificationId;
+  };
+
   getSearchList = () => {
     const { search } = this.data.body;
     const result = search

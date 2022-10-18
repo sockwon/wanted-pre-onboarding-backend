@@ -66,7 +66,16 @@ const notificationGetList = async () => {
   return await database
     .getRepository(Notification)
     .createQueryBuilder("notification")
-    .getMany();
+    .select([
+      "notification.id as 채용공고_ID",
+      "notification.position as 채용포지션",
+      "notification.reward as 채용보상금",
+      "notification.stack as 사용기술",
+      "notification.region as 지역",
+      "notification.nation as 국가",
+      "notification.description as 채용내용",
+    ])
+    .execute();
 };
 
 const notificationGetSearch = async (search) => {
@@ -74,6 +83,7 @@ const notificationGetSearch = async (search) => {
     .getRepository(Notification)
     .createQueryBuilder("notification")
     .select([
+      "notification.id as 채용공고_ID",
       "company.company_name as 회사명",
       "notification.position as 채용포지션",
       "notification.reward as 채용보상금",
@@ -90,7 +100,51 @@ const notificationGetSearch = async (search) => {
     .orWhere("nation LIKE :search", { search: `%${search}%` })
     .orWhere("description LIKE :search", { search: `%${search}%` })
     .orWhere("company_name LIKE :search", { search: `%${search}%` })
+    .orWhere("notification.id LIKE :search", { search: `%${search}%` })
     .execute();
+};
+
+const notificationGetPage = async (notificationId) => {
+  const exist = await isExistId("notification", notificationId);
+  if (exist) {
+    const value = await database
+      .getRepository(Notification)
+      .createQueryBuilder("notification")
+      .select(["company.id"])
+      .innerJoin(Company, "company", "company.id = notification.companyId")
+      .where("notification.id=:id", { id: notificationId })
+      .execute();
+    const temp = await database
+      .getRepository(Notification)
+      .createQueryBuilder("notification")
+      .select(["notification.id"])
+      .where("notification.companyId=:id", { id: value[0].company_id })
+      .execute();
+    const arr = [];
+    for (let val of temp) {
+      arr.push(val.notification_id);
+    }
+    const result = await database
+      .getRepository(Notification)
+      .createQueryBuilder("notification")
+      .select([
+        "notification.id as 채용공고_ID",
+        "company.company_name as 회사명",
+        "notification.position as 채용포지션",
+        "notification.reward as 채용보상금",
+        "notification.stack as 사용기술",
+        "notification.region as 지역",
+        "notification.nation as 국가",
+        "notification.description as 채용내용",
+      ])
+      .innerJoin(Company, "company", "company.id = notification.companyId")
+      .where("notification.id=:id", { id: notificationId })
+      .execute();
+    result[0]["회사가올린다른채용공고_id"] = arr;
+    return result;
+  } else {
+    throw new error.BaseError("Not_exist", 400, "this_id_does_not_exist");
+  }
 };
 
 module.exports = {
@@ -99,4 +153,5 @@ module.exports = {
   notificationDelete,
   notificationGetList,
   notificationGetSearch,
+  notificationGetPage,
 };

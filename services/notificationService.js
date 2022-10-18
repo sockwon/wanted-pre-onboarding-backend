@@ -7,12 +7,14 @@ const notificationPost = async (data) => {
   await notificationDao.notificationPost(result);
 };
 
-const notificationPatch = async (notificationId, data) => {
+const notificationPatch = async (data) => {
   const result = data.getNotificationUpdateData();
+  const notificationId = data.getNotificationId();
   await notificationDao.notificationPatch(notificationId, result);
 };
 
-const notificationDelete = async (notificationId) => {
+const notificationDelete = async (data) => {
+  const notificationId = data.getNotificationId();
   await notificationDao.notificationDelete(notificationId);
 };
 
@@ -22,8 +24,14 @@ const notificationGetList = async () => {
 
 const notificationGetSearch = async (data) => {
   const result = data.getSearchList();
-  console.log(result);
+  error.findKeyError(result);
   return await notificationDao.notificationGetSearch(result);
+};
+
+const notificationGetPage = async (data) => {
+  const notificationId = data.getNotificationId();
+  error.findKeyError(notificationId);
+  return await notificationDao.notificationGetPage(notificationId);
 };
 
 module.exports = {
@@ -32,4 +40,5 @@ module.exports = {
   notificationDelete,
   notificationGetList,
   notificationGetSearch,
+  notificationGetPage,
 };
