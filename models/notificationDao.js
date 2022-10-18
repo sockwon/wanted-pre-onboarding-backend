@@ -61,4 +61,16 @@ const notificationDelete = async (notificationId) => {
   }
 };
 
-module.exports = { notificationPost, notificationPatch, notificationDelete };
+const notificationGetList = async () => {
+  return await database
+    .getRepository(Notification)
+    .createQueryBuilder("notification")
+    .getMany();
+};
+
+module.exports = {
+  notificationPost,
+  notificationPatch,
+  notificationDelete,
+  notificationGetList,
+};

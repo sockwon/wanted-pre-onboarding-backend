@@ -16,8 +16,13 @@ const notificationDelete = async (notificationId) => {
   await notificationDao.notificationDelete(notificationId);
 };
 
+const notificationGetList = async () => {
+  return await notificationDao.notificationGetList();
+};
+
 module.exports = {
   notificationPost,
   notificationPatch,
   notificationDelete,
+  notificationGetList,
 };

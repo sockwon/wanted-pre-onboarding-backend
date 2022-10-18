@@ -20,8 +20,15 @@ const notificationDelete = async (req, res) => {
   await notificationService.notificationDelete(notificationId);
   res.status(204).json({ message: "success" });
 };
+
+const notificationGetList = async (req, res) => {
+  const result = await notificationService.notificationGetList();
+  res.status(200).json(result);
+};
+
 module.exports = {
   notificationPost,
   notificationPatch,
   notificationDelete,
+  notificationGetList,
 };

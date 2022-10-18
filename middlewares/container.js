@@ -3,6 +3,12 @@ class Request {
     this.data = req;
   }
 
+  getSearchList = () => {
+    const search = this.data.query;
+    const result = search.trim().split(" ");
+    return result;
+  };
+
   getCompanyName = () => {
     const { companyName } = this.data.body;
     return companyName;
