@@ -1,19 +1,27 @@
 const notificationService = require("../services/notificationService");
+const requestData = require("../middlewares/container");
 
 const notificationPost = async (req, res) => {
-  const { companyId, position, reward, stack, region, nation, description } =
-    req.body;
-  await notificationService.notificationPost(
-    companyId,
-    position,
-    reward,
-    stack,
-    region,
-    nation,
-    description
+  await notificationService.notificationPost(new requestData(req));
+  res.status(201).json({ message: "success" });
+};
+
+const notificationPatch = async (req, res) => {
+  const { notificationId } = req.params;
+  await notificationService.notificationPatch(
+    notificationId,
+    new requestData(req)
   );
   res.status(201).json({ message: "success" });
 };
+
+const notificationDelete = async (req, res) => {
+  const { notificationId } = req.params;
+  await notificationService.notificationDelete(notificationId);
+  res.status(204).json({ message: "success" });
+};
 module.exports = {
   notificationPost,
+  notificationPatch,
+  notificationDelete,
 };
