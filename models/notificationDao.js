@@ -73,7 +73,6 @@ const notificationGetList = async () => {
       "notification.stack as 사용기술",
       "notification.region as 지역",
       "notification.nation as 국가",
-      "notification.description as 채용내용",
     ])
     .execute();
 };
