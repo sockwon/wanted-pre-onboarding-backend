@@ -4,7 +4,6 @@ class Request {
   }
 
   getNotificationId = () => {
-    console.log(this.data.params);
     const { notificationId } = this.data.params;
     return notificationId;
   };
