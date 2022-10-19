@@ -3,14 +3,18 @@ const { createApp } = require("../app");
 const { database } = require("../models/database");
 const companyDao = require("../models/companyDao");
 const notificationDao = require("../models/notificationDao");
+const userDao = require("../models/userDao");
 
-describe("채용공고 테스트입니다", () => {
+describe("테스트 목록", () => {
   let app;
   beforeAll(async () => {
     app = createApp();
     await database.initialize();
     const exampleCompany = {
       companyName: "아이오트러스트",
+    };
+    const exampleUser = {
+      email: "ason@gmail.com",
     };
     const exampleNoti1 = {
       companyId: 1,
@@ -30,6 +34,7 @@ describe("채용공고 테스트입니다", () => {
       nation: "한국",
       description: "기숙사 지원.",
     };
+    await userDao.userPost(exampleUser.email);
     await companyDao.companyPost(exampleCompany.companyName);
     await notificationDao.notificationPost(exampleNoti1);
     await notificationDao.notificationPost(exampleNoti2);
@@ -37,7 +42,9 @@ describe("채용공고 테스트입니다", () => {
   afterAll(async () => {
     await database.query(`SET foreign_key_checks = 0`);
     await database.query(`TRUNCATE company`);
+    await database.query(`TRUNCATE user`);
     await database.query(`TRUNCATE notification`);
+    await database.query(`TRUNCATE registration`);
     await database.query(`SET foreign_key_checks = 1`);
     await database.destroy();
   });
@@ -81,12 +88,19 @@ describe("채용공고 테스트입니다", () => {
       .expect({ message: "success" });
   });
 
-  test("채용공고 수정 테스트: 실패, 실제로는 없는 공고물", async () => {
+  test("채용공고 수정 테스트: 실패, 없는 공고물", async () => {
     await request(app)
       .patch("/notification/100")
       .send({ reward: 500, description: "내용 바꿈" })
       .expect(400)
       .expect({ message: "this_id_does_not_exist" });
+  });
+
+  test("채용공고 수정 테스트: 실패, notificationId 미입력", async () => {
+    await request(app)
+      .patch("/notification/")
+      .send({ reward: 500, description: "내용 바꿈" })
+      .expect(404);
   });
 
   test("채용공고 목록 가져오기: 성공", async () => {
@@ -190,5 +204,103 @@ describe("채용공고 테스트입니다", () => {
 
   test("채용공고 상세페이지 가져오기: 실패, id 입력값 없음", async () => {
     await request(app).get("/notification/page").expect(404);
+  });
+
+  test("사용자가 채용공고에 지원: 성공", async () => {
+    await request(app)
+      .post("/user/registration")
+      .send({ userId: 1, notificationId: 1 })
+      .expect(201)
+      .expect({ message: "success" });
+  });
+
+  test("사용자가 채용공고에 지원: 실패, 이미 지원한 공고", async () => {
+    await request(app)
+      .post("/user/registration")
+      .send({ userId: 1, notificationId: 1 })
+      .expect(400)
+      .expect({ message: "already_applied" });
+  });
+
+  test("사용자가 채용공고에 지원: 실패, 없는 공고", async () => {
+    await request(app)
+      .post("/user/registration")
+      .send({ userId: 1, notificationId: 999 })
+      .expect(400)
+      .expect({ message: "not_exist" });
+  });
+
+  test("사용자가 채용공고에 지원: 실패, 칼럼값을 빠뜨림", async () => {
+    await request(app)
+      .post("/user/registration")
+      .send({ userId: 1, notificationId: "" })
+      .expect(400)
+      .expect({ message: "invalid_key" });
+  });
+
+  test("채용공고를 삭제: 성공", async () => {
+    await request(app).delete("/notification/3").expect(204);
+  });
+
+  test("채용공고를 삭제: 실패, 없는 공고", async () => {
+    await request(app)
+      .delete("/notification/4")
+      .expect(400)
+      .expect({ message: "this_id_does_not_exist" });
+  });
+
+  test("채용공고를 삭제: 실패, notificationId 를 미입력", async () => {
+    await request(app).delete("/notification/").expect(404);
+  });
+
+  test("채용공고를 삭제: 실패, notificationId 를 문자열로 입력", async () => {
+    await request(app)
+      .delete("/notification/abc")
+      .expect(400)
+      .expect({ message: "this_id_does_not_exist" });
+  });
+
+  test("사용자 post: 성공", async () => {
+    await request(app)
+      .post("/user/create")
+      .send({
+        email: "ooop@gmail.com",
+      })
+      .expect(201)
+      .expect({ message: "success" });
+  });
+
+  test("사용자 post: 실패, body 가 비었음", async () => {
+    await request(app)
+      .post("/user/create")
+      .send({
+        email: "",
+      })
+      .expect(400)
+      .expect({ message: "invalid_key" });
+  });
+
+  test("회사 post: 성공", async () => {
+    await request(app)
+      .post("/company/create")
+      .send({
+        companyName: "예플",
+      })
+      .expect(201)
+      .expect({ message: "success" });
+  });
+
+  test("회사 post: 실패, body 가 비었음", async () => {
+    await request(app)
+      .post("/company/create")
+      .send({
+        companyName: "",
+      })
+      .expect(400)
+      .expect({ message: "invalid_key" });
+  });
+
+  test("서버 헬스 체크", async () => {
+    await request(app).get("/ping").expect(200).expect({ message: "pong" });
   });
 });

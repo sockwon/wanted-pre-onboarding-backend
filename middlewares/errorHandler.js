@@ -1,8 +1,3 @@
-const errorHandlerSync = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  res.status(err.statusCode).json({ message: err.message });
-};
-
 const errorHandlerAsync = (func) => {
   return async (req, res, next) => {
     try {
@@ -14,6 +9,5 @@ const errorHandlerAsync = (func) => {
 };
 
 module.exports = {
-  errorHandlerSync,
   errorHandlerAsync,
 };

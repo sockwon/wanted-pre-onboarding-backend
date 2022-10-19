@@ -7,7 +7,7 @@
     "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config",
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "coverage": "jest --coverage"
+    "coverage": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --coverage"
   },
   "repository": {
     "type": "git",
